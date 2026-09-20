@@ -1,0 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage"; import React,{createContext,useContext,useEffect,useMemo,useState} from "react";
+export type ThemeId="midnight"|"amoled"|"aurora"|"graphite"|"ocean"|"physics";
+export type ClockFace="minimal"|"arc"|"neon"|"flip"|"digital"|"pulse";
+type State={xp:number;coins:number;level:number;theme:ThemeId;pageThemes:Record<string,ThemeId>;clockFace:ClockFace;batterySaver:"off"|"auto"|"always";};
+const initial:State={xp:0,coins:0,level:1,theme:"midnight",pageThemes:{},clockFace:"arc",batterySaver:"auto"};
+const C=createContext<any>(null);
+export function ProProvider({children}:{children:React.ReactNode}){const[state,setState]=useState(initial);useEffect(()=>{AsyncStorage.getItem("studyarc-pro").then(v=>v&&setState({...initial,...JSON.parse(v)})).catch(()=>{})},[]);useEffect(()=>{AsyncStorage.setItem("studyarc-pro",JSON.stringify(state)).catch(()=>{})},[state]);const api=useMemo(()=>({state,setState,reward:(xp:number,coins:number)=>setState((s:State)=>({...s,xp:s.xp+xp,coins:s.coins+coins,level:Math.max(1,Math.floor((s.xp+xp)/500)+1)})),setTheme:(theme:ThemeId)=>setState((s:State)=>({...s,theme})),setClockFace:(clockFace:ClockFace)=>setState((s:State)=>({...s,clockFace}))}),[state]);return <C.Provider value={api}>{children}</C.Provider>} export const usePro=()=>useContext(C);
