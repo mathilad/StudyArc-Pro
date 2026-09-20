@@ -1,0 +1,2 @@
+import React from "react"; import {Stack} from "expo-router"; import {StatusBar} from "expo-status-bar"; import {ProProvider} from "../context/ProContext";
+export default function Layout(){return <ProProvider><StatusBar style="light"/><Stack screenOptions={{headerShown:false,contentStyle:{backgroundColor:"#080D14"}}}/></ProProvider>}
