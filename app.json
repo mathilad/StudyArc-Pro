@@ -1,0 +1,1 @@
+{"expo":{"name":"StudyArc Pro","slug":"studyarc-pro","version":"2.0.0","orientation":"default","scheme":"studyarcpro","userInterfaceStyle":"dark","ios":{"supportsTablet":true,"bundleIdentifier":"com.studyarc.pro"},"android":{"package":"com.studyarc.pro","versionCode":1},"web":{"output":"static"},"plugins":["expo-router"]}}
