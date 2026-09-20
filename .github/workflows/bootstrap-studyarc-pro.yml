@@ -1,0 +1,33 @@
+name: Bootstrap StudyArc Pro
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/bootstrap-studyarc-pro.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout StudyArc Pro
+        uses: actions/checkout@v4
+        with:
+          path: pro
+          fetch-depth: 0
+      - name: Checkout StudyArc baseline
+        uses: actions/checkout@v4
+        with:
+          repository: mathilad/StudyArc
+          ref: main
+          path: source
+      - name: Merge baseline without overwriting Pro work
+        shell: bash
+        run: |
+          rsync -a --ignore-existing --exclude='.git/' --exclude='.github/workflows/bootstrap-studyarc-pro.yml' source/ pro/
+          cd pro
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Import complete StudyArc baseline"
+          git push
